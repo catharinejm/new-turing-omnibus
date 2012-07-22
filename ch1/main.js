@@ -27604,8 +27604,8 @@ goog.require("goog.dom");
 goog.require("goog.graphics");
 NodeList.prototype.cljs$core$ISeqable$ = true;
 NodeList.prototype.cljs$core$ISeqable$_seq$arity$1 = function(this$) {
-  return cljs.core.doall.call(null, cljs.core.map.call(null, function(p1__81354_SHARP_) {
-    return this$.item(p1__81354_SHARP_)
+  return cljs.core.doall.call(null, cljs.core.map.call(null, function(p1__99229_SHARP_) {
+    return this$.item(p1__99229_SHARP_)
   }, cljs.core.range.call(null, this$.length)))
 };
 ch1.wallpaper.game_window = goog.graphics.createGraphics(800, 800);
@@ -27616,29 +27616,29 @@ ch1.wallpaper.draw_point_BANG_ = function draw_point_BANG_(canvas, x, y) {
 };
 ch1.wallpaper.wallpaper_BANG_ = function wallpaper_BANG_(canvas, side) {
   canvas.clear();
-  var n__2551__auto____81361 = 100;
-  var i__81362 = 0;
+  var n__2551__auto____99236 = 100;
+  var i__99237 = 0;
   while(true) {
-    if(i__81362 < n__2551__auto____81361) {
-      var x__81363 = i__81362 * (side / 100);
-      var n__2551__auto____81364 = 100;
-      var j__81365 = 0;
+    if(i__99237 < n__2551__auto____99236) {
+      var x__99238 = i__99237 * (side / 100);
+      var n__2551__auto____99239 = 100;
+      var j__99240 = 0;
       while(true) {
-        if(j__81365 < n__2551__auto____81364) {
-          var y__81366 = j__81365 * (side / 100);
-          if(cljs.core.even_QMARK_.call(null, Math.floor(x__81363 * x__81363 + y__81366 * y__81366))) {
-            ch1.wallpaper.draw_point_BANG_.call(null, canvas, x__81363, y__81366)
+        if(j__99240 < n__2551__auto____99239) {
+          var y__99241 = j__99240 * (side / 100);
+          if(cljs.core.even_QMARK_.call(null, Math.floor(x__99238 * x__99238 + y__99241 * y__99241))) {
+            ch1.wallpaper.draw_point_BANG_.call(null, canvas, x__99238, y__99241)
           }else {
           }
-          var G__81367 = j__81365 + 1;
-          j__81365 = G__81367;
+          var G__99242 = j__99240 + 1;
+          j__99240 = G__99242;
           continue
         }else {
         }
         break
       }
-      var G__81368 = i__81362 + 1;
-      i__81362 = G__81368;
+      var G__99243 = i__99237 + 1;
+      i__99237 = G__99243;
       continue
     }else {
       return null
@@ -27647,46 +27647,45 @@ ch1.wallpaper.wallpaper_BANG_ = function wallpaper_BANG_(canvas, side) {
   }
 };
 ch1.wallpaper.serialize_inputs = function serialize_inputs(form_el) {
-  var inputs__81370 = form_el.querySelectorAll("input");
+  var inputs__99245 = form_el.querySelectorAll("input");
   return cljs.core.reduce.call(null, function(m, el) {
     return cljs.core.assoc.call(null, m, cljs.core.keyword.call(null, el.getAttribute("name")), el.value)
-  }, cljs.core.ObjMap.EMPTY, inputs__81370)
+  }, cljs.core.ObjMap.EMPTY, inputs__99245)
 };
 ch1.wallpaper.nan_QMARK_ = function nan_QMARK_(x) {
-  var and__3822__auto____81372 = cljs.core.number_QMARK_.call(null, x);
-  if(and__3822__auto____81372) {
+  var and__3822__auto____99247 = cljs.core.number_QMARK_.call(null, x);
+  if(and__3822__auto____99247) {
     return cljs.core.not_EQ_.call(null, x, x)
   }else {
-    return and__3822__auto____81372
+    return and__3822__auto____99247
   }
 };
 ch1.wallpaper.update_canvas = function update_canvas(canvas, form_el, event) {
-  var inputs__81375 = ch1.wallpaper.serialize_inputs.call(null, form_el);
-  var side__81376 = parseInt((new cljs.core.Keyword("\ufdd0'side")).call(null, inputs__81375));
-  if(cljs.core.truth_(cljs.core.some.call(null, ch1.wallpaper.nan_QMARK_, ch1.wallpaper.int_inputs))) {
-    alert("ETNER SOME NUMMAS")
+  var inputs__99250 = ch1.wallpaper.serialize_inputs.call(null, form_el);
+  var side__99251 = parseInt((new cljs.core.Keyword("\ufdd0'side")).call(null, inputs__99250));
+  if(cljs.core.truth_(ch1.wallpaper.nan_QMARK_.call(null, side__99251))) {
   }else {
-    ch1.wallpaper.wallpaper_BANG_.call(null, canvas, side__81376)
+    ch1.wallpaper.wallpaper_BANG_.call(null, canvas, side__99251)
   }
   return false
 };
 ch1.wallpaper.init_form = function init_form(form_el) {
-  var query_data__81390 = (new goog.Uri(window.location.href)).getQueryData();
-  var param_names__81391 = query_data__81390.getKeys();
+  var query_data__99265 = (new goog.Uri(window.location.href)).getQueryData();
+  var param_names__99266 = query_data__99265.getKeys();
   return cljs.core.dorun.call(null, function() {
-    var iter__2486__auto____81402 = function iter__81392(s__81393) {
+    var iter__2486__auto____99277 = function iter__99267(s__99268) {
       return new cljs.core.LazySeq(null, false, function() {
-        var s__81393__81398 = s__81393;
+        var s__99268__99273 = s__99268;
         while(true) {
-          if(cljs.core.seq.call(null, s__81393__81398)) {
-            var param__81399 = cljs.core.first.call(null, s__81393__81398);
-            var input__81400 = form_el.querySelector([cljs.core.str('input[name="'), cljs.core.str(param__81399), cljs.core.str('"]')].join(""));
-            var value__81401 = cljs.core.first.call(null, query_data__81390.getValues(param__81399));
-            if(cljs.core.truth_(input__81400)) {
-              return cljs.core.cons.call(null, input__81400.value = value__81401, iter__81392.call(null, cljs.core.rest.call(null, s__81393__81398)))
+          if(cljs.core.seq.call(null, s__99268__99273)) {
+            var param__99274 = cljs.core.first.call(null, s__99268__99273);
+            var input__99275 = form_el.querySelector([cljs.core.str('input[name="'), cljs.core.str(param__99274), cljs.core.str('"]')].join(""));
+            var value__99276 = cljs.core.first.call(null, query_data__99265.getValues(param__99274));
+            if(cljs.core.truth_(input__99275)) {
+              return cljs.core.cons.call(null, input__99275.value = value__99276, iter__99267.call(null, cljs.core.rest.call(null, s__99268__99273)))
             }else {
-              var G__81403 = cljs.core.rest.call(null, s__81393__81398);
-              s__81393__81398 = G__81403;
+              var G__99278 = cljs.core.rest.call(null, s__99268__99273);
+              s__99268__99273 = G__99278;
               continue
             }
           }else {
@@ -27696,13 +27695,13 @@ ch1.wallpaper.init_form = function init_form(form_el) {
         }
       }, null)
     };
-    return iter__2486__auto____81402.call(null, param_names__81391)
+    return iter__2486__auto____99277.call(null, param_names__99266)
   }())
 };
 window.onload = function() {
-  var dimensions_form__81404 = goog.dom.getElement("dimensions");
-  dimensions_form__81404.onsubmit = cljs.core.partial.call(null, ch1.wallpaper.update_canvas, ch1.wallpaper.game_window, dimensions_form__81404);
-  ch1.wallpaper.init_form.call(null, dimensions_form__81404);
-  dimensions_form__81404.querySelector("input[type=submit]").click();
+  var dimensions_form__99279 = goog.dom.getElement("dimensions");
+  dimensions_form__99279.onsubmit = cljs.core.partial.call(null, ch1.wallpaper.update_canvas, ch1.wallpaper.game_window, dimensions_form__99279);
+  ch1.wallpaper.init_form.call(null, dimensions_form__99279);
+  dimensions_form__99279.querySelector("input[type=submit]").click();
   return ch1.wallpaper.game_window.render()
 };

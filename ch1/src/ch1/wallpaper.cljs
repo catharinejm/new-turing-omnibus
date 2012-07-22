@@ -38,8 +38,7 @@
 (defn update-canvas [canvas form-el event]
   (let [inputs (serialize-inputs form-el)
         side (js/parseInt (:side inputs))]
-    (if (some nan? int-inputs)
-      (js/alert "ETNER SOME NUMMAS")
+    (when-not (nan? side)
       (wallpaper! canvas side))
     false))
 
