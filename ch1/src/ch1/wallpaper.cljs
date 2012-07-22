@@ -46,10 +46,12 @@
 (defn init-form [form-el]
   (let [query-data (.getQueryData (goog.Uri. (.. js/window -location -href)))
         param-names (.getKeys query-data)]
-    (doseq [param param-names
-            :let [input (.querySelector form-el (str "input[name=\"" param "\"]"))
-                  value (first (.getValues query-data param))]]
-      (set! input -value value))))
+    (dorun
+     (for [param param-names
+           :let [input (.querySelector form-el (str "input[name=\"" param "\"]"))
+                 value (first (.getValues query-data param))]
+           :when input]
+       (set! input -value value)))))
 
 (set! js/window -onload
       (fn []
