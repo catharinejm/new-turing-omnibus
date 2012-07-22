@@ -7,20 +7,21 @@
   (-seq [this] (doall (map #(.item this %)
                            (range (.-length this))))))
 
-(def game-window (gfx/createGraphics 800 600))
+(def game-window (gfx/createGraphics 800 800))
 (def stroke (gfx/Stroke. 0 "#FFF"))
 (def fill (gfx/SolidFill. "black"))
 
 (defn draw-point! [canvas x y]
-  (.drawRect canvas x y 1 1 stroke fill))
+  (.drawRect canvas (* 4 x) (* 4 y) 4 4 stroke fill))
 
-(defn wallpaper! [canvas corna cornb side]
+(defn wallpaper! [canvas side]
+  (.clear canvas)
   (dotimes [i 100]
-    (dotimes [j 100]
-      (let [x (+ i 8)
-            y (+ j 6)]
-        (when (even? (+ (* x x) (* y y)))
-          (draw-point! canvas i j))))))
+    (let [x (* i (/ side 100))]
+      (dotimes [j 100]
+        (let [y (* j (/ side 100))]
+          (when (even? (.floor js/Math (+ (* x x) (* y y))))
+            (draw-point! canvas x y)))))))
 
 (defn serialize-inputs [form-el]
   (let [inputs (.querySelectorAll form-el "input")]
@@ -35,10 +36,10 @@
 
 (defn update-canvas [canvas form-el event]
   (let [inputs (serialize-inputs form-el)
-        int-inputs (map (comp js/parseInt inputs) [:corna :cornb :side])]
+        side (js/parseInt (:side inputs))]
     (if (some nan? int-inputs)
       (js/alert "ETNER SOME NUMMAS")
-      (apply wallpaper! canvas int-inputs))
+      (wallpaper! canvas side))
     false))
 
 (set! js/window -onload
