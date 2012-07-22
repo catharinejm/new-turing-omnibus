@@ -1,6 +1,7 @@
 (ns ch1.wallpaper
   (:require [goog.graphics :as gfx]
-            [goog.dom :as dom]))
+            [goog.dom :as dom]
+            goog.Uri))
 
 (extend-type js/NodeList
   cljs.core.ISeqable
@@ -42,9 +43,19 @@
       (wallpaper! canvas side))
     false))
 
+(defn init-form [form-el]
+  (let [query-data (.getQueryData (goog.Uri. (.. js/window -location -href)))
+        param-names (.getKeys query-data)]
+    (doseq [param param-names
+            :let [input (.querySelector form-el (str "input[name=\"" param "\"]"))
+                  value (first (.getValues query-data param))]]
+      (set! input -value value))))
+
 (set! js/window -onload
       (fn []
         (let [dimensions-form (dom/getElement "dimensions")]
           (set! dimensions-form -onsubmit
                 (partial update-canvas game-window dimensions-form))
+          (init-form dimensions-form)
+          (.click (.querySelector dimensions-form "input[type=submit]"))
           (.render game-window))))
