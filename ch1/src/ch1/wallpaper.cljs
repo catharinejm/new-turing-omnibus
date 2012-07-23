@@ -45,8 +45,8 @@
 (defn update-canvas [canvas form-el event]
   (let [inputs (serialize-inputs form-el)
         side (js/parseInt (:side inputs))
-        colors (:colors inputs)]
-    (when-not (nan? side)
+        colors (filterv (comp not empty?) (:colors inputs))]
+    (when-not (or (nan? side) (empty? colors))
       (wallpaper! canvas side colors))
     false))
 
