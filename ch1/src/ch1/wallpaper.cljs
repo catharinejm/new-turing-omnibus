@@ -10,26 +10,33 @@
 
 (def game-window (gfx/createGraphics 800 800))
 (def stroke (gfx/Stroke. 0 "#FFF"))
-(def fill (gfx/SolidFill. "black"))
 
-(defn draw-point! [canvas x y]
-  (.drawRect canvas (* 4 x) (* 4 y) 4 4 stroke fill))
+(defn draw-point! [canvas x y color]
+  (let [fill (gfx/SolidFill. color)]
+    (.drawRect canvas (* 4 x) (* 4 y) 4 4 stroke fill)))
 
-(defn wallpaper! [canvas side]
+(defn wallpaper! [canvas side colors]
   (.clear canvas)
   (dotimes [i 100]
     (let [x (* i (/ side 100))]
       (dotimes [j 100]
-        (let [y (* j (/ side 100))]
-          (when (even? (.floor js/Math (+ (* x x) (* y y))))
-            (draw-point! canvas x y)))))))
+        (let [y (* j (/ side 100))
+              drw-idx (.floor js/Math
+                              (rem (+ (* x x) (* y y))
+                                   (inc (count colors))))]
+          (when (contains? colors drw-idx)
+            (draw-point! canvas x y (nth colors drw-idx))))))))
 
 (defn serialize-inputs [form-el]
   (let [inputs (.querySelectorAll form-el "input")]
     (reduce (fn [m el]
-              (assoc m
-                (keyword (.getAttribute el "name"))
-                (.-value el)))
+              (let [el-name (.getAttribute el "name")
+                    kname (keyword (re-find #"^[^\[]+" el-name))
+                    value (.-value el)]
+                (update-in m [kname]
+                           #(if (= (name kname) el-name)
+                              value
+                              (conj (vec %) value)))))
             {} inputs)))
 
 (defn nan? [x]
@@ -37,9 +44,10 @@
 
 (defn update-canvas [canvas form-el event]
   (let [inputs (serialize-inputs form-el)
-        side (js/parseInt (:side inputs))]
+        side (js/parseInt (:side inputs))
+        colors (:colors inputs)]
     (when-not (nan? side)
-      (wallpaper! canvas side))
+      (wallpaper! canvas side colors))
     false))
 
 (defn init-form [form-el]
