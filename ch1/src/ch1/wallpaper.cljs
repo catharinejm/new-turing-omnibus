@@ -65,13 +65,12 @@
     false))
 
 (defn animate []
-  (let [frames (mapv #(build-frame % ["black"]) (range 100))
+  (let [frames (mapv #(build-frame % ["black"]) (range 200))
         n (atom 0)]
     (js/setInterval
      (fn []
-       (when (< @n (count frames))
-         (draw-frame game-window (nth frames @n))
-         (swap! n inc)))
+       (draw-frame game-window (nth frames @n))
+       (swap! n #(rem (inc %) (count frames))))
      100)))
 
 (defn init-form [form-el]
@@ -91,4 +90,5 @@
                 (partial update-canvas game-window dimensions-form))
           (init-form dimensions-form)
           (.click (.querySelector dimensions-form "input[type=submit]"))
+          (set! (.querySelector dimensions-form "input[name=animate]") -onclick animate)
           (.render game-window))))
