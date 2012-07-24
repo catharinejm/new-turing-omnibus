@@ -15,17 +15,31 @@
   (let [fill (gfx/SolidFill. color)]
     (.drawRect canvas x y 1 1 stroke fill)))
 
-(defn wallpaper! [canvas side colors]
+(defn build-frame [side colors]
+  (let [side (/ side 100)
+        clr-size (inc (count colors))]
+    (vec
+     (doall
+      (for [i (range 100)
+            j (range 100)
+            :let [x (* i side)
+                  y (* j side)
+                  drw-idx (.floor js/Math
+                                  (rem (+ (* x x) (* y y)) clr-size))]]
+        (if (< drw-idx (count colors))
+          (nth colors drw-idx)))))))
+
+(defn draw-frame [canvas frame]
   (.clear canvas)
-  (dotimes [i 100]
-    (let [x (* i (/ side 100))]
-      (dotimes [j 100]
-        (let [y (* j (/ side 100))
-              drw-idx (.floor js/Math
-                              (rem (+ (* x x) (* y y))
-                                   (inc (count colors))))]
-          (when (contains? colors drw-idx)
-            (draw-point! canvas i j (nth colors drw-idx))))))))
+  (doseq [i (range 100)
+          j (range 100)
+          :let [color-idx (+ j (* i 100))
+                color (nth frame color-idx)]]
+    (if color
+      (draw-point! canvas i j color))))
+
+(defn wallpaper! [canvas side colors]
+  (draw-frame canvas (build-frame side colors)))
 
 (defn serialize-inputs [form-el]
   (let [inputs (.querySelectorAll form-el "input")]
@@ -51,12 +65,14 @@
     false))
 
 (defn animate []
-  (let [n (atom 0)]
+  (let [frames (mapv #(build-frame % ["black"]) (range 100))
+        n (atom 0)]
     (js/setInterval
      (fn []
-       (wallpaper! game-window @n ["black" "grey" "lightgrey"])
-       (swap! n inc))
-     200)))
+       (when (< @n (count frames))
+         (draw-frame game-window (nth frames @n))
+         (swap! n inc)))
+     100)))
 
 (defn init-form [form-el]
   (let [query-data (.getQueryData (goog.Uri. (.. js/window -location -href)))
