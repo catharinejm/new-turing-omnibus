@@ -8,12 +8,12 @@
   (-seq [this] (doall (map #(.item this %)
                            (range (.-length this))))))
 
-(def game-window (gfx/createGraphics 400 400))
+(def game-window (gfx/createGraphics 400 400 100 100))
 (def stroke (gfx/Stroke. 0 "#FFF"))
 
 (defn draw-point! [canvas x y color]
   (let [fill (gfx/SolidFill. color)]
-    (.drawRect canvas (* 4 x) (* 4 y) 4 4 stroke fill)))
+    (.drawRect canvas x y 1 1 stroke fill)))
 
 (defn wallpaper! [canvas side colors]
   (.clear canvas)
@@ -49,6 +49,14 @@
     (when-not (or (nan? side) (empty? colors))
       (wallpaper! canvas side colors))
     false))
+
+(defn animate []
+  (let [n (atom 0)]
+    (js/setInterval
+     (fn []
+       (wallpaper! game-window @n ["black" "grey" "lightgrey"])
+       (swap! n inc))
+     200)))
 
 (defn init-form [form-el]
   (let [query-data (.getQueryData (goog.Uri. (.. js/window -location -href)))
