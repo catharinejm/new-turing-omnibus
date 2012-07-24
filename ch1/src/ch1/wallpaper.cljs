@@ -8,7 +8,7 @@
   (-seq [this] (doall (map #(.item this %)
                            (range (.-length this))))))
 
-(def game-window (gfx/createGraphics 800 800))
+(def game-window (gfx/createGraphics 400 400))
 (def stroke (gfx/Stroke. 0 "#FFF"))
 
 (defn draw-point! [canvas x y color]
@@ -25,7 +25,7 @@
                               (rem (+ (* x x) (* y y))
                                    (inc (count colors))))]
           (when (contains? colors drw-idx)
-            (draw-point! canvas x y (nth colors drw-idx))))))))
+            (draw-point! canvas i j (nth colors drw-idx))))))))
 
 (defn serialize-inputs [form-el]
   (let [inputs (.querySelectorAll form-el "input")]
